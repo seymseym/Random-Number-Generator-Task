@@ -21,7 +21,6 @@ using System.Linq;
  *
  */
 
-
 namespace TaskQuestion.Tests
 {
     [TestClass()]
