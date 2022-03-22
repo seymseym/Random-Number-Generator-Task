@@ -27,7 +27,7 @@ namespace TaskQuestion
             {
                 new KeyValuePair<int, double>(8, 0.2),
                 new KeyValuePair<int, double>(43, 0.2),
-                new KeyValuePair<int, double>(56, 0.6),
+                //new KeyValuePair<int, double>(56, 0.5),
             };
 
             Generator.AddPairs(inputPairsList);
@@ -52,9 +52,12 @@ namespace TaskQuestion
             }
 
             var item = outputDictionary.Keys.FirstOrDefault();
-            string prob = string.Format("{0:P}", outputDictionary[item]);
+            var value = Math.Round(outputDictionary[item], 1);
+            string prob = string.Format("{0:P}", value);
 
             Console.WriteLine($"Random Value {item} is generated with {prob} probability");
+           // Console.WriteLine($"Random Value {item} is generated with {outputDictionary[item]} probability");
+           
             Console.ReadLine();
         }
     }

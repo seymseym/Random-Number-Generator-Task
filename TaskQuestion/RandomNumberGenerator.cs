@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Text; 
 
 namespace TaskQuestion
 {
@@ -22,15 +22,30 @@ namespace TaskQuestion
         }
         #endregion
 
-        #region Methods
+        #region Methods 
         public int GenerateRandomNumber()
         {
             double rand = _random.NextDouble();
             int index = 0;
 
+            // For ex: numbers: 1,2,3 ---> probs:| 0.2 | 0.3 | 0.5 |
+            //                             cdf  :| 0.2 | 0.5 |  1  |  
+            //                                   |     |     |     |
+            // Generated Random Values           |     |     |     |
+            // random [0, 1) ---> 0.1 ---------->| 1   |     |     |
+            // random [0, 1) ---> 0.3 ---------->|     |  2  |     |
+            // random [0, 1) ---> 0.7 ---------->|     |     |  3  |
+            // ----------------------------------------------------
+            //After calling 10.000 times ------->| 11  | 222 | 33333 (proportionally)
+
+
+
             foreach (var keyValuePair in _probabilityDict)
             {
-                if (rand * _cdfSum <= _cumulativeSumList[index])
+                // Feed uniformly distributed random numbers from 0..1 interval
+                // into the inverse cumulative distribution function.
+
+                if (rand <= _cumulativeSumList[index] / _cdfSum)
                 {
                     return keyValuePair.Key;
                 }
@@ -47,7 +62,6 @@ namespace TaskQuestion
                     _probabilityDict.Remove(pair.Key);
                     _cdfSum -= oldDist;
                     _cumulativeSumList.Remove(_cdfSum);
-
                 }
                 _probabilityDict.Add(new KeyValuePair<int, double>(pair.Key, pair.Value));
                 _cdfSum += pair.Value;
@@ -56,4 +70,4 @@ namespace TaskQuestion
         }
         #endregion
     }
-}
+} 
